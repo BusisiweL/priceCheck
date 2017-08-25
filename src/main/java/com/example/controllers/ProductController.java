@@ -12,6 +12,7 @@ import com.example.repository.ProductRepository;
 import com.example.service.CustomerService;
 import com.example.service.ProductService;
 import com.example.utility.Utility;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -30,64 +34,37 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
 
     @Autowired
     private ProductRepository repository;
-
-    private int quantity;
-
-    @RequestMapping("/shop/products")
-    public List<Product> getProducts() {
-        List<Product> products = new ArrayList<>();
-
-        repository.findAll().forEach(products::add);
-
-        return products;
-    }
+    
 
     @RequestMapping("/shop/{id}/product/{productId}")
     public Product getProduct(@PathVariable long id) {
-        return productService.getProduct(id);
+        //return repository.findOne(id);
+        Product p = new Product();
+        
+        return p;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/shop/products")
-    public void addProduct(@RequestBody Stock product) {
-        boolean isAvailable = false;
-
-        for (Product p : repository.findAll()) {
-            if (p.getDescription().equals(product.getDescription())
-                    && p.getPrice() == product.getPrice()) {
-                isAvailable = true;
-                p.setQuantity(p.getQuantity() + 1);
-            }
-        }
-
-        Product prod = new Product();
-
-        if (!isAvailable) {
-            prod.setDescription(product.getDescription());
-            prod.setPrice(product.getPrice());
-            prod.setImageURL(product.getImage());
-            prod.setQuantity(1);
-            prod.setTotal(0.0);
-
-        }
-        repository.save(prod);
-        for(Product p : repository.findAll()){
-            
-            if(p.getQuantity() == 0){
-                repository.delete(p);
-            }            
-        }
+    public @ResponseBody void addProduct(@RequestParam("file") MultipartFile file,
+            @RequestParam(value = "description") String description,
+            @RequestParam(value = "category") String category,
+            @RequestParam(value = "price") double price) throws IOException {
+        
+        byte[] image = file.getBytes();
+        
+        Stock stock = new Stock(description, image, category, price);
+        
+        repository.save(stock);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/shop/products/total")
     public String calculateTotal() {
 
         double t = 0;
-        for (Product p : repository.findAll()) {
+        for (Stock p : repository.findAll()) {
             t += p.getPrice();
         }
         DecimalFormat fm = new DecimalFormat("##.##");
@@ -97,13 +74,7 @@ public class ProductController {
         return total;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/product/update1")
-    public int getQuantity(@RequestBody int qty) {
-
-        quantity = qty;
-
-        return quantity;
-    }
+   
 
     @RequestMapping(method = RequestMethod.POST, value = "/product/update")
     public Product updateProduct(@RequestBody Product product) {
@@ -112,6 +83,7 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/shop/product/delete")
     public void deleteProduct(@RequestBody Product id) {
-        repository.delete(id);
+        //repository.delete(id);
     }
+    
 }

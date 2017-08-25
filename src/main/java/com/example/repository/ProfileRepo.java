@@ -5,13 +5,13 @@
  */
 package com.example.repository;
 
-import com.example.entity.OrderLine;
+import com.example.entity.Profile;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author User
  */
-public interface OrderLineRepo extends CrudRepository<OrderLine, Long>{
+public interface ProfileRepo extends CrudRepository<Profile, Long>{
     
 }

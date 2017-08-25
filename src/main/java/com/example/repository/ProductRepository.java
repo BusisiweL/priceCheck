@@ -7,12 +7,13 @@ package com.example.repository;
 
 import com.example.entity.Customer;
 import com.example.entity.Product;
+import com.example.entity.Stock;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author User
  */
-public interface ProductRepository extends CrudRepository<Product, Long>{
+public interface ProductRepository extends CrudRepository<Stock, Long>{
     
 }

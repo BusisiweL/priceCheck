@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
 <html ng-app="app"  xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
@@ -78,7 +83,7 @@
 
 
 
-    <body ng-app="app" ng-submit="loginAdmin()" ng-controller="AdminController">
+    <body >
 
         <div>
             <div class="container">
@@ -118,21 +123,43 @@
         </div>
 
         <center>
-            <h1>Supplier Login</h1>
+            <h1>User Login</h1>
 
-            <form>
-                <table class="table table-stripped">
+            <form ng-init="viewData()" ng-controller="ProfileController">
+                <table>
                     <tr>
                         <td>
-                            <label>Username <td><input type="text" ng-model="admin.username"/></td>
+                            <label>Display name: <td>{{displayName}}</td>
                             </label>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <label>Password <td><input type="password" ng-model="admin.password" /></td>
+                            <label>Name <td> {{name}}</td>
                             </label>
                         </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Email <td> {{email}}</td>
+                            </label>
+                        </td>
+                    </tr>
+                   <tr>
+                        <td>
+                            <label>Username <td> {{username}}</td>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Male <td><select ng-model="pro.gender">
+                                                   <option value="Male">Male</option>
+                                                   <option value="Female">Female</option>
+                                    </select></td>
+                            </label>
+                        </td>
+                        
                     </tr>
                     <tr>
                         <td> <input type="submit" name="Sign In" value="Sign In"/></td>

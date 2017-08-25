@@ -5,8 +5,9 @@
  */
 package com.example.controllers;
 
-import com.example.entity.DeliveryAddress;
-import com.example.repository.AddressRepo;
+import com.example.entity.Customer;
+import com.example.entity.Profile;
+import com.example.repository.ProfileRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
  * @author User
  */
 @RestController
-public class AddressController {
-    
+public class ProfileController {
+
     @Autowired
-    private AddressRepo repo;
+    private ProfileRepo repository;
+
     
-    @RequestMapping(value = "/address/add", method = RequestMethod.POST)
-    public void addAddress(@RequestBody DeliveryAddress ad){
-        
-        repo.save(ad);
-        
-        //System.out.println(ad.getCustID().getId());
+    @RequestMapping(method = RequestMethod.POST, value = "/profile/create")
+    public void addPerson(@RequestBody Profile profile){
+        repository.save(profile);
     }
+
 }

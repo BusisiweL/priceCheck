@@ -6,7 +6,7 @@
 
 
 var app = angular.module('app', ['ngCookies']);
-app.controller('RegController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
+app.controller('RegController', ['$scope', '$http', '$location', '$window', '$cookies', function ($scope, $http, $location, $window, $cookies) {
 
         $scope.create = function () {
             var url = "http://localhost:8090/customers/create/";
@@ -22,7 +22,11 @@ app.controller('RegController', ['$scope', '$http', '$location', '$window', func
 
                 if ($scope.cust.password === $scope.cust.conf) {
                     alert("Customer successfully registered!!");
-                    $window.location.href = "http://localhost:8090/shop";
+                    $cookies.put("name", $scope.cust.name);
+                    $cookies.put("email", $scope.cust.email);
+                    $cookies.put("username", $scope.cust.username);
+
+                    $window.location.href = "http://localhost:8090/test";
                 } else {
                     alert("The two passwords do not match!");
                     $scope.cust.password = "";
@@ -32,9 +36,79 @@ app.controller('RegController', ['$scope', '$http', '$location', '$window', func
                 alert("Failed ");
             });
         };
+
+        $scope.viewData = function () {
+            $scope.name = $cookies.get("name");
+            $scope.email = $cookies.get("email");
+            $scope.username = $cookies.get("username");
+            $scope.displayName = $scope.name + "" + $scope.username;
+        };
+
+        $scope.createprofile = function () {
+            var url = "http://localhost:8090/profile/create/";
+
+            $scope.name = $cookies.get("name");
+            $scope.email = $cookies.get("email");
+            $scope.username = $cookies.get("username");
+            $scope.displayName = $scope.name + "" + $scope.username;
+
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+
+            $scope.profile = {
+                displayName: $scope.displayName,
+                name: $scope.name,
+                email: $scope.email,
+                username: $scope.username,
+                gender: $scope.pro.gender,
+                dateofbirth: $scope.pro.dateofbirth
+            };
+
+            $http.post(url, $scope.profile, config).then(function () {
+                alert("Profile successfully created!!");
+                //$window.location.href = "http://localhost:8090/profile/";
+            }, function () {
+                alert("Failed ");
+            });
+        };
+    }]);
+app.controller('ProfileController', ['$scope', '$http', '$location', '$window', '$cookies', function ($scope, $http, $location, $window, $cookies) {
+
+        $scope.viewData = function () {
+            $scope.name = $cookies.get("name");
+            $scope.email = $cookies.get("email");
+            $scope.username = $cookies.get("username");
+            $scope.displayName = $scope.name + "" + $scope.username;
+        };
+
+        $scope.create = function () {
+            var url = "http://localhost:8090/profile/create/";
+
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+
+
+
+            $http.post(url, $scope.pro, config).then(function () {
+
+                alert("Profile successfully created!!");
+
+                //$window.location.href = "http://localhost:8090/profile/";
+
+            }, function () {
+                alert("Failed ");
+            });
+        };
     }]);
 
-app.controller('LoginController', ['$scope', '$http', '$location', '$window', '$cookies', function ($scope, $http, $location, $window, $cookies) {
+
+app.controller('LoginController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
         var user;
 
         $scope.loginCust = function () {
@@ -56,15 +130,6 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', '$
                 } else {
                     alert("Successfully logged in as " + $scope.customerData.name);
                     $window.location.href = "http://localhost:8090/allProducts";
-                    
-                    $cookies.put("id", $scope.customerData.id);
-                    $cookies.put("name", $scope.customerData.name);
-                    $cookies.put("email", $scope.customerData.email);
-                    $cookies.put("number", $scope.customerData.number);
-                    $cookies.put("username", $scope.customerData.username);
-                    $cookies.put("password", $scope.customerData.password);
-                    
-                    
                 }
 
             }, function (response) {
@@ -125,24 +190,24 @@ app.controller('AdminController', ['$scope', '$http', '$location', '$window', fu
     }]);
 
 app.controller('StockController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
-
-        $scope.addStock = function () {
-            var url = "http://localhost:8090/admin/stock/";
-
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8;'
-                }
-            };
-
-
-            $http.post(url, $scope.stock, config).then(function () {
-                alert($scope.stock.description + " added as stock");
-
+        
+        $scope.selectedUploadFile;
+        $scope.uploadFile = function () {
+            //get Stock number
+            var formData = new FormData();
+            formData.append('file', $scope.selectedUploadFile);
+            formData.append('description', $scope.stock.description);
+            formData.append('category', $scope.stock.category);
+            formData.append('price', $scope.stock.price);
+     
+            $http.post('http://localhost:8090/shop/products/', formData, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(function () {
+                alert("Success");
             }, function () {
-                alert("Failed ");
+                alert("Image size too large!!");
             });
-
         };
     }]);
 app.controller('GetStockController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
@@ -172,21 +237,8 @@ app.controller('GetStockController', ['$scope', '$http', '$location', '$window',
             quantity: 1
         };
 
-        $scope.addToCart = function (product) {
-            var url = "http://localhost:8090/shop/products/";
 
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8;'
-                }
-            };
 
-            $http.post(url, product, config).then(function (response) {
-                alert(product.description + " added to cart!");
-            }, function (response) {
-                alert(angular.toJson(response) + "Failed");
-            });
-        };
 
     }]);
 
@@ -220,20 +272,6 @@ app.controller('GetCartController', ['$scope', '$http', '$location', '$window', 
                 alert(getResultMessage);
             });
         };
-        $scope.proceedCheckout = function () {
-            $window.location.href = "http://localhost:8090/addess";
-        };
-        $scope.deletefromcart = function (cart) {
-            var url = "http://localhost:8090/shop/product/delete/";
-
-            $http.post(url, cart, config).then(function (response) {
-
-                alert("Product removed!");
-            }, function (response) {
-                $scope.getResultMessage = "Failed!";
-                alert(getResultMessage);
-            });
-        };
 
         $scope.updatequantity = function (cart) {
             var url = "http://localhost:8090/product/update/";
@@ -257,23 +295,16 @@ app.controller('GetCartController', ['$scope', '$http', '$location', '$window', 
             });
         };
     }]);
-app.controller('PlaceOrder', ['$scope', '$http', '$location', '$window', '$cookies', function ($scope, $http, $location, $window, $cookies) {
+app.controller('PlaceOrder', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
         var config = {
             headers: {
                 'Content-Type': 'application/json;charset=utf-8;'
             }
         };
-        
-        var id = $cookies.get("id");
-        var name = $cookies.get("name");
-        var address = $cookies.get("address");
-        var email = $cookies.get("email");
-        var number = $cookies.get("number");
-        var username = $cookies.get("username");
-        var password = $cookies.get("password");
-        
+
+
         $scope.customer = {
-            id: id, 
+            id: id,
             name: name,
             address: address,
             email: email,
@@ -281,29 +312,8 @@ app.controller('PlaceOrder', ['$scope', '$http', '$location', '$window', '$cooki
             username: username,
             password: password
         };
-        
-        $scope.sendCustomer = function(){
-            var url = "http://localhost:8090/address/add/";
-            
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8;'
-                }
-            };
-            
-           $http.post(url, $scope.customer, config).then(function () {
-                alert("Delivery address successfully added!");
-                $window.location.href = "http://localhost:8090/thank";
 
-            }, function () {
-                alert("Failed");
-            }); 
-        };
-    }]);
-
-app.controller('DAddressCtrl', ['$scope', '$http', '$location', '$window', '$cookies', function ($scope, $http, $location, $window, $cookies) {
-
-        $scope.addAdress = function () {
+        $scope.sendCustomer = function () {
             var url = "http://localhost:8090/address/add/";
 
             var config = {
@@ -312,21 +322,7 @@ app.controller('DAddressCtrl', ['$scope', '$http', '$location', '$window', '$coo
                 }
             };
 
-            var id = $cookies.get("id");
-            
-            
-
-            $scope.address = {
-                city: $scope.d.city,
-                suburb: $scope.d.suburb,
-                street: $scope.d.street,
-                snumber: $scope.d.snumber,
-                bname: $scope.d.bname,
-                unumber: $scope.d.unumber,
-                custID: id
-            };
-
-            $http.post(url, $scope.address, config).then(function () {
+            $http.post(url, $scope.customer, config).then(function () {
                 alert("Delivery address successfully added!");
                 $window.location.href = "http://localhost:8090/thank";
 
@@ -335,7 +331,6 @@ app.controller('DAddressCtrl', ['$scope', '$http', '$location', '$window', '$coo
             });
         };
     }]);
-
 app.controller('FetchStockController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
 
         $scope.getfunction = function () {
@@ -375,25 +370,52 @@ app.controller('FetchStockController', ['$scope', '$http', '$location', '$window
 
     }]);
 
-app.controller('LoggedInController', ['$scope', '$http', '$location', '$window', '$cookies', function ($scope, $http, $location, $window, $cookies) {
 
+app.controller('GetCustomersController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
 
-
-        $scope.getLoggedInUser = function () {
-            $scope.name = $cookies.get("name");
-            $scope.email = $cookies.get("email");
-            $scope.number = $cookies.get("number");
+        var config = {
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
         };
 
-        //$window.location.href = "http://localhost:8090/address/";
-    }]);
-
-app.controller('Direction', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
+        $scope.getAllOrders = function () {
+            var url = "http://localhost:8090/orders/";
 
 
+            $http.get(url, config).then(function (response) {
+                $scope.customers = response.data;
+            }, function (response) {
+                $scope.getResultMessage = "Failed!";
+                alert(getResultMessage);
+            });
+        };
 
-        $scope.getDirection = function () {
-            $window.location.href = "http://localhost:8090/addess/";
+        $scope.getcustomerfunction = function () {
+            var url = "http://localhost:8090/customers/";
+
+
+            $http.get(url, config).then(function (response) {
+                $scope.customers = response.data;
+            }, function (response) {
+                $scope.getResultMessage = "Failed!";
+                alert(getResultMessage);
+            });
         };
 
     }]);
+app.directive('fileModel', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+});

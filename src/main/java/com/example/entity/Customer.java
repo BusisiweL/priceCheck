@@ -22,9 +22,9 @@ public class Customer implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private String address;
+  
     private String email;
-    private String number;
+   
     private String username;
     private String password;
     
@@ -33,21 +33,21 @@ public class Customer implements Serializable{
     public Customer() {
     }
 
-    public Customer(Long id, String name, String address, String email, String number, String username, String password) {
+    public Customer(Long id, String name, String email,String username, String password) {
         this.id = id;
         this.name = name;
-        this.address = address;
+       
         this.email = email;
-        this.number = number;
+        
         this.username = username;
         this.password = password;
     }
 
-    public Customer(String name, String address, String email, String number, String username, String password) {
+    public Customer(String name, String email, String username, String password) {
         this.name = name;
-        this.address = address;
+       
         this.email = email;
-        this.number = number;
+       
         this.username = username;
         this.password = password;
     }
@@ -68,13 +68,7 @@ public class Customer implements Serializable{
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    
 
     public String getEmail() {
         return email;
@@ -84,13 +78,7 @@ public class Customer implements Serializable{
         this.email = email;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
+  
 
     public String getUsername() {
         return username;
