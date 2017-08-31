@@ -325,7 +325,7 @@ app.controller('CarController', ['$scope', '$http', '$location', '$window', func
 
         $scope.selectedUploadFile;
         $scope.uploadFile = function () {
-            //get Stock number
+            //get Car number
             var formData = new FormData();
             formData.append('file', $scope.selectedUploadFile);
             formData.append('year', $scope.car.year);
