@@ -29,12 +29,6 @@ public class MainController {
     private String loginCustomer() {
         return "login";
     }
-
-    @GetMapping("/shop")
-    private String myShop() {
-        return "shop";
-    }
-
     @GetMapping("/admin")
     private String admin() {
         return "admin";
@@ -55,39 +49,9 @@ public class MainController {
         return "viewMoreLogin";
     }
 
-    @GetMapping("/Cart")
-    private String getCart() {
-        return "Cart";
-    }
-
-    @GetMapping("/checkout")
-    private String getCheckout() {
-        return "Checkout";
-    }
-
-    @GetMapping("/thank")
-    private String getLastPage() {
-        return "thank";
-    }
-
     @GetMapping("/getStock")
     private String getStockPage() {
         return "myStock";
-    }
-
-    @GetMapping("/update")
-    private String getUpdatePage() {
-        return "update";
-    }
-
-    @GetMapping("/div")
-    private String getPage() {
-        return "bootIndex";
-    }
-
-    @GetMapping("/addess")
-    private String getPage1() {
-        return "addressD";
     }
 
     @GetMapping("/getCustomers")
@@ -96,12 +60,29 @@ public class MainController {
     }
     
     @GetMapping("/profile")
-    private String lizzy() {
+    private String getProfile() {
         return "Profile";
     }
     
     @GetMapping("/test")
-    private String lizz() {
+    private String getTest() {
         return "test";
+    }
+     @GetMapping("/car")
+    private String getCar() {
+        return "Car";
+    }
+     @GetMapping("/cars")
+    private String cars() {
+        return "addCar";
+    }
+    
+    @GetMapping("/viewcar")
+    private String viewcar() {
+        return "ViewCar";
+    }
+    @GetMapping("/getCar")
+    private String getCarPage() {
+        return "myCars";
     }
 }

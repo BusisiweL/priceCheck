@@ -129,7 +129,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
                     alert("Incorrect Username or password");
                 } else {
                     alert("Successfully logged in as " + $scope.customerData.name);
-                    $window.location.href = "http://localhost:8090/allProducts";
+                    $window.location.href = "http://localhost:8090/";
                 }
 
             }, function (response) {
@@ -139,26 +139,7 @@ app.controller('LoginController', ['$scope', '$http', '$location', '$window', fu
         };
     }]);
 
-app.controller('ShopController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
 
-        $scope.addToCart = function () {
-            var url = "http://localhost:8090/shop/products/";
-
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8;'
-                }
-            };
-
-
-            $http.post(url, $scope.prod, config).then(function (response) {
-                alert($scope.prod.description + " added to cart!");
-            }, function (response) {
-                alert(response.toString() + "Failed");
-            });
-        };
-
-    }]);
 
 app.controller('AdminController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
 
@@ -188,9 +169,36 @@ app.controller('AdminController', ['$scope', '$http', '$location', '$window', fu
             });
         };
     }]);
+app.controller('AdminCarController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
 
+        $scope.loginCarAdmin = function () {
+            var url = "http://localhost:8090/cars/login/";
+
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+
+
+            $http.post(url, $scope.car, config).then(function (response) {
+
+                $scope.carsData = response.data;
+
+                if ($scope.carsData.username === null) {
+                    alert("Incorrect Username or password");
+                } else {
+                    alert("Successfully logged in!!");
+                    $window.location.href = "http://localhost:8090/cars";
+                }
+
+            }, function (response) {
+                alert(response.toString() + "Failed");
+            });
+        };
+    }]);
 app.controller('StockController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
-        
+
         $scope.selectedUploadFile;
         $scope.uploadFile = function () {
             //get Stock number
@@ -199,7 +207,8 @@ app.controller('StockController', ['$scope', '$http', '$location', '$window', fu
             formData.append('description', $scope.stock.description);
             formData.append('category', $scope.stock.category);
             formData.append('price', $scope.stock.price);
-     
+            formData.append('name', $scope.stock.name);
+
             $http.post('http://localhost:8090/shop/products/', formData, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
@@ -242,95 +251,7 @@ app.controller('GetStockController', ['$scope', '$http', '$location', '$window',
 
     }]);
 
-app.controller('GetCartController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8;'
-            }
-        };
-        $scope.total = function () {
-            var url = "http://localhost:8090/shop/products/total";
-
-            $http.get(url, config).then(function (response) {
-                $scope.totalPrice = response.data;
-
-            }, function (response) {
-                $scope.getResultMessage = "Fail!";
-                alert(getResultMessage);
-            });
-        };
-
-        $scope.getcartfunction = function () {
-            var url = "http://localhost:8090/shop/products/";
-
-            $http.get(url, config).then(function (response) {
-                $scope.products = response.data;
-
-            }, function (response) {
-                $scope.getResultMessage = "Fail!";
-                alert(getResultMessage);
-            });
-        };
-
-        $scope.updatequantity = function (cart) {
-            var url = "http://localhost:8090/product/update/";
-
-            $http.post(url, cart, config).then(function (response) {
-                $scope.cartUpdate = response.data;
-                alert("Sent");
-                $window.location.href = "http://localhost:8090/update";
-            }, function (response) {
-                $scope.getResultMessage = "Failed!";
-                alert(getResultMessage);
-            });
-
-            var url1 = "http://localhost:8090/shop/product/update1/";
-            $http.post(url1, quantity, config).then(function (response) {
-
-                alert("Quantity sent!");
-            }, function (response) {
-                $scope.getResultMessage = "Failed!";
-                alert(getResultMessage);
-            });
-        };
-    }]);
-app.controller('PlaceOrder', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
-        var config = {
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8;'
-            }
-        };
-
-
-        $scope.customer = {
-            id: id,
-            name: name,
-            address: address,
-            email: email,
-            number: number,
-            username: username,
-            password: password
-        };
-
-        $scope.sendCustomer = function () {
-            var url = "http://localhost:8090/address/add/";
-
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8;'
-                }
-            };
-
-            $http.post(url, $scope.customer, config).then(function () {
-                alert("Delivery address successfully added!");
-                $window.location.href = "http://localhost:8090/thank";
-
-            }, function () {
-                alert("Failed");
-            });
-        };
-    }]);
 app.controller('FetchStockController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
 
         $scope.getfunction = function () {
@@ -362,9 +283,161 @@ app.controller('FetchStockController', ['$scope', '$http', '$location', '$window
             };
 
             $http.post(url, stock, config).then(function (response) {
-                alert(stock.description + " removed from stock!");
+                alert(stock.name + " removed from stock!");
             }, function () {
                 alert("Failed to remove product!");
+            });
+        };
+        
+        $scope.updateStock = function () {
+
+            $scope.show = true;
+        };
+        
+         $scope.updateS = function (stock) {
+            var url = "http://localhost:8090/product/update";
+
+            $scope.product = {
+                id: stock.id,
+                name: stock.name,
+                description: stock.description,
+                category: stock.category,
+                price: stock.price,
+                image: stock.image
+                
+            };
+            
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+            
+            $http.post(url, $scope.product, config).then(function (response) {
+                alert("Updated!!");
+            }, function (response) {
+                alert("Failed!!");
+            });
+        };
+
+    }]);
+app.controller('CarController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
+
+        $scope.selectedUploadFile;
+        $scope.uploadFile = function () {
+            //get Stock number
+            var formData = new FormData();
+            formData.append('file', $scope.selectedUploadFile);
+            formData.append('year', $scope.car.year);
+            formData.append('price', $scope.car.price);
+            formData.append('name', $scope.car.name);
+
+            $http.post('http://localhost:8090/car/add/', formData, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(function () {
+                alert("Success");
+            }, function () {
+                alert("Image size too large!!");
+            });
+        };
+    }]);
+app.controller('GetCarController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
+
+        $scope.getfunction = function () {
+            var url = "http://localhost:8090/cars/car/";
+
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+
+
+            $http.get(url, config).then(function (response) {
+                $scope.response = response.data;
+            }, function (response) {
+                $scope.getResultMessage = "Fail!";
+                alert(getResultMessage);
+            });
+        };
+
+        var prod = {};
+        prod = {
+            year: $scope.year,
+            price: $scope.price,
+            quantity: 1
+        };
+
+
+
+
+    }]);
+
+
+app.controller('FetchCarController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
+
+        $scope.getfunction = function () {
+            var url = "http://localhost:8090/cars/car/";
+
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+
+
+            $http.get(url, config).then(function (response) {
+                $scope.car = response.data;
+            }, function (response) {
+                $scope.getResultMessage = "Fail!";
+                alert(getResultMessage);
+            });
+        };
+
+        $scope.deletefromcar = function (car) {
+
+            var url = "http://localhost:8090/car/delete/";
+
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+
+            $http.post(url, car, config).then(function (response) {
+                alert(car.name + " removed from car!");
+            }, function () {
+                alert("Failed to remove car!");
+            });
+        };
+         $scope.updateCar = function () {
+
+            $scope.show = true;
+        };
+        
+         $scope.updateC = function (car) {
+            var url = "http://localhost:8090/car/update";
+
+            $scope.car = {
+                id: car.id,
+                name: car.name,
+                year: car.year,
+                price: car.price,
+                image: car.image
+                
+            };
+            
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8;'
+                }
+            };
+            
+            $http.post(url, $scope.car, config).then(function (response) {
+                alert("Updated!!");
+            }, function (response) {
+                alert("Failed!!");
             });
         };
 

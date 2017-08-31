@@ -78,7 +78,7 @@
 
 
 
-    <body ng-controller="RegController">
+    <body ng-app="app" ng-submit="loginCarAdmin()" ng-controller="AdminCarController">
 
         <div>
             <div class="container">
@@ -104,75 +104,36 @@
             <a href="http://localhost:8090/">Home</a>
             <a href="http://localhost:8090/register">Register</a>
             <a href="http://localhost:8090/login">Login</a>
-            <a href="http://localhost:8090/viewcar">Cars</a>
-           
+           <a href="http://localhost:8090/viewcar">Cars</a>
+            
             <div class="panel-body">
 
             </div>
         </div>
-        <div class="mainContent" ng-init="viewData()">
-            <div class="content">
-                <article class="topcontent">
 
-                    <content>
-                        <div class="form-style-10">
+        <center>
+            <h1>CSupplier Login</h1>
 
-                            <form>
-
-                                <table class="table table-stripped">
-                                    <tr><td><b><h3>PROFILE SETTINGS</h3></b></td></tr>
-                                    <tr>
-                                        <td>
-                                            <label>Display name: <td>{{displayName}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Name <td> {{name}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Email <td> {{email}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Username <td> {{username}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Male <td><select ng-model="pro.gender">
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </select></td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Date of birth <td><input type="date" ng-model="pro.dateofbirth" /></td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> <input type="submit" ng-click="createprofile()" name="Save" value="Save"/></td>
-
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
-                    </content>
-                </article>
-            </div>
-        </div>
-
-
-
+            <form>
+                <table class="table table-stripped">
+                    <tr>
+                        <td>
+                            <label>Username <td><input type="text" ng-model="car.username"/></td>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label>Password <td><input type="password" ng-model="car.password" /></td>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td> <input type="submit" name="Sign In" value="Sign In"/></td>
+                        <td><input type="submit" name="" value="Cancel"/></td>
+                    </tr>
+                </table>
+            </form>
+        </center>
     </body>
 </html>

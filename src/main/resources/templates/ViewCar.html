@@ -71,14 +71,14 @@
             .float-right{
                 float: right;
             }
-
+            
         </style>
     </head>
 
 
 
 
-    <body ng-controller="RegController">
+    <body class="body" ng-controller="FetchCarController">
 
         <div>
             <div class="container">
@@ -92,87 +92,41 @@
                     </ul>
                 </div>
                 <img src="Pictures/logo2.png" width="300" height="100" alt=""/>
-                <form class="searchbox_1" action="">
-                    <input type="search" class="search_1" placeholder="search" ng-model="search" />
-                    <button type="submit" class="submit_1" value="search">&nbsp;</button>
-                </form>
+<form class="searchbox_1" action="">
+<input type="search" class="search_1" placeholder="search" ng-model="search" />
+<button type="submit" class="submit_1" value="search">&nbsp;</button>
+</form>
+                   
 
             </div>
         </div>
 
         <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8090/">Home</a>
             <a href="http://localhost:8090/register">Register</a>
+            <a href="http://localhost:8090/test">Profile</a>
             <a href="http://localhost:8090/login">Login</a>
+            <a href="http://localhost:8090/admin">Supplier</a>
+            <a href="http://localhost:8090/car">CSupplier</a>
             <a href="http://localhost:8090/viewcar">Cars</a>
            
-            <div class="panel-body">
-
-            </div>
+            
         </div>
-        <div class="mainContent" ng-init="viewData()">
-            <div class="content">
-                <article class="topcontent">
-
-                    <content>
-                        <div class="form-style-10">
-
-                            <form>
-
-                                <table class="table table-stripped">
-                                    <tr><td><b><h3>PROFILE SETTINGS</h3></b></td></tr>
-                                    <tr>
-                                        <td>
-                                            <label>Display name: <td>{{displayName}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Name <td> {{name}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Email <td> {{email}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Username <td> {{username}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Male <td><select ng-model="pro.gender">
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </select></td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Date of birth <td><input type="date" ng-model="pro.dateofbirth" /></td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> <input type="submit" ng-click="createprofile()" name="Save" value="Save"/></td>
-
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
-                    </content>
-                </article>
-            </div>
+        <div ng-init="getfunction()" >
+            
+                    <div class="col-sm-4 col-md-4" ng-repeat="car in car| filter:search">
+                        <div class="thumbnail">
+                           
+                            <div class="caption">
+                               
+                                <img ng-src="data:image/JPEG;base64,{{car.image}}" height="100" width="100" alt="img" />
+                       
+                        <h6><b>Name:</b>{{car.name}}</h6>
+                        <h6><b>Year:</b>{{car.year}}</h6>
+                        <h6><b>Price:</b> R{{car.price}}</h6>
+</div>
+                
+                </div>
+              </div>
         </div>
-
-
-
     </body>
 </html>

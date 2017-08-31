@@ -71,7 +71,7 @@
             .float-right{
                 float: right;
             }
-
+            
         </style>
     </head>
 
@@ -86,8 +86,8 @@
                     <ul class="nav nav-tabs">
                         <li><span>Sites in our network:</span>
                         </li>
-                        <li  class="active"><a href="#">PriceCheck</a></li>
-                        <li><a href="car.html">PriceCheck  <strong>Cars</strong></a></li>
+                        <li><a href="http://localhost:8090/">PriceCheck</a></li>
+                        <li><a href="http://localhost:8090/viewcar">PriceCheck  <strong>Cars</strong></a></li>
                         <li><a href="#">PriceCheck  <strong>Property</strong></a></li>
                     </ul>
                 </div>
@@ -106,15 +106,10 @@
             <a href="http://localhost:8090/test">Profile</a>
             <a href="http://localhost:8090/login">Login</a>
             <a href="http://localhost:8090/admin">Supplier</a>
-            <a href="#news">Categories</a>
-            <a href="#Car Insurance">Car Insurances</a>
-            <a href="#Flights">Flights</a>
-            <a href="#Car Rentals">Car Rentals</a>
-            <a href="#Daily Deals">Daily Deals</a>
-            <a href="#Catalogues">Catalogues</a>
-            <a href="#Shopping Tips and Tricks">Shopping Tip and tricks</a>
-            <a href="#Cars">Cars</a>
-            <a href="#Property">Property</a>
+            <a href="http://localhost:8090/car">CSupplier</a>
+            <a href="http://localhost:8090/getStock">View Stock</a>
+            <a href="http://localhost:8090/viewcar">Cars</a>
+            
             
         </div>
         <div ng-init="getfunction()" >
@@ -123,13 +118,15 @@
                         <div class="thumbnail">
                            
                             <div class="caption">
-                        <img ng-src="data:image/JPEG;base64,{{stock.image}}" alt="img" />                 
-                        <h3><b>Name:</b>{{stock.description}}</h3>
-                        <h3><b>Description:</b>{{stock.description}}</h3>
-                        <h3><b>Category: </b> R{{stock.category}}</h3>
-                        <h3><b>Price:</b> R{{stock.price}}</h3>
-
-                </div>
+                               
+                                <img ng-src="data:image/JPEG;base64,{{stock.image}}" height="100" width="100" alt="img" />
+                       
+                        <h6><b>Name:</b>{{stock.name}}</h6>
+                        <h6><b>Description:</b>{{stock.description}}</h6>
+                        <h6><b>Category: </b> {{stock.category}}</h6>
+                        <h6><b>Price:</b> R{{stock.price}}</h6>
+</div>
+                
                 </div>
               </div>
         </div>

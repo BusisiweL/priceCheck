@@ -10,7 +10,6 @@ import com.example.entity.Product;
 import com.example.entity.Stock;
 import com.example.repository.ProductRepository;
 import com.example.service.CustomerService;
-import com.example.service.ProductService;
 import com.example.utility.Utility;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -50,12 +49,13 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.POST, value = "/shop/products")
     public @ResponseBody void addProduct(@RequestParam("file") MultipartFile file,
             @RequestParam(value = "description") String description,
+            @RequestParam(value = "name") String name,
             @RequestParam(value = "category") String category,
             @RequestParam(value = "price") double price) throws IOException {
         
         byte[] image = file.getBytes();
         
-        Stock stock = new Stock(description, image, category, price);
+        Stock stock = new Stock(name, description, image, category, price);
         
         repository.save(stock);
     }
@@ -77,8 +77,8 @@ public class ProductController {
    
 
     @RequestMapping(method = RequestMethod.POST, value = "/product/update")
-    public Product updateProduct(@RequestBody Product product) {
-        return product;
+    public void updateStock(@RequestBody Stock stock) {
+        repository.save(stock);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/shop/product/delete")

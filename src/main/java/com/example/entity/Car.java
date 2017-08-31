@@ -16,34 +16,31 @@ import javax.persistence.Id;
  *
  * @author User
  */
-@Entity(name = "stock")
-public class Stock implements Serializable{
+@Entity(name = "car")
+public class Car implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private String description;
+    private String year;
     private byte[] image;
-    private String category;
     private double price;
 
-    public Stock() {
+    public Car() {
     }
 
-    public Stock(String name, String description, byte[] image, String category, double price) {
+    public Car(String name, String year, byte[] image,double price) {
         this.name = name;
-        this.description = description;
+        this.year = year;
         this.image = image;
-        this.category = category;
         this.price = price;
     }
 
-    public Stock(long id, String name, String description, byte[] image, String category, double price) {
+    public Car(long id, String name, String year, byte[] image, double price) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.year = year;
         this.image = image;
-        this.category = category;
         this.price = price;
     }
 
@@ -73,21 +70,15 @@ public class Stock implements Serializable{
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getYear() {
+        return year;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setYear(String year) {
+        this.year = year;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
+  
 
     public double getPrice() {
         return price;

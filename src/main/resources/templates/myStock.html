@@ -102,35 +102,38 @@
         </div>
 
         <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8090/index">Home</a>
+            <a href="http://localhost:8090/">Home</a>
             <a href="http://localhost:8090/register">Register</a>
             <a href="http://localhost:8090/test">Profile</a>
             <a href="http://localhost:8090/login">Login</a>
             <a href="http://localhost:8090/admin">Supplier</a>
-            <a href="#news">Categories</a>
-            <a href="#Car Insurance">Car Insurances</a>
-            <a href="#Flights">Flights</a>
-            <a href="#Car Rentals">Car Rentals</a>
-            <a href="#Daily Deals">Daily Deals</a>
-            <a href="#Catalogues">Catalogues</a>
-            <a href="#Shopping Tips and Tricks">Shopping Tip and tricks</a>
-            <a href="#Cars">Cars</a>
-            <a href="#Property">Property</a>
+            <a href="http://localhost:8090/viewcar">Cars</a>
+           
             
         </div>
         <div ng-app="app" ng-init="getfunction()" ng-controller="FetchStockController">
             <center>
                 <form>
-                    <table>
+                    <table class="table table-stripped">
                         <tr ng-repeat="stock in products">
                             
-                            
-                            <td><b>Name</b>{{stock.description}}</td>
+                           
+                            <td><b>Name</b> {{stock.name}}</td>
                             <td><b>Description:</b> {{stock.description}}</td>
-                            <td><b>Category: </b> R{{stock.category}}</td>
+                            <td><b>Category: </b> {{stock.category}}</td>
                             <td><b>Price: </b> R{{stock.price}}</td>
-                            <td><button ng-click="deletefromstock(stock)">Remove</button></td>
-                            <td><button ng-click="updatequantity(stock)">Update</button></td>
+                            <td><button ng-click="deletefromstock(stock)">Delete</button></td>
+                            
+                            <td><button ng-click="updateStock()">Update</button></td>
+                            <td ng-show="show">
+                                <input type="text"  placeholder="New Name" ng-model="stock.name"/>
+                                <input type="text"  placeholder="New Description" ng-model="stock.description"/>
+                                <input type="text"  placeholder="New Category" ng-model="stock.category"/>
+                                <input type="number"  placeholder="New Price" ng-model="stock.price"/>
+                            </td>
+                            <td ng-show="show">
+                                <button ng-click="updateS(stock)">Save</button>
+                            </td>
                         </tr>
                     </table>
                 </form>

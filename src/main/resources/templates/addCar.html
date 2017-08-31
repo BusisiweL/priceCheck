@@ -78,7 +78,7 @@
 
 
 
-    <body ng-controller="RegController">
+    <body ng-app="app" ng-submit="uploadFile()" ng-controller="CarController"> 
 
         <div>
             <div class="container">
@@ -97,82 +97,36 @@
                     <button type="submit" class="submit_1" value="search">&nbsp;</button>
                 </form>
 
+
             </div>
         </div>
 
         <div class="topnav" id="myTopnav">
-            <a href="http://localhost:8090/">Home</a>
+             <a href="http://localhost:8090/">Home</a>
             <a href="http://localhost:8090/register">Register</a>
+            <a href="http://localhost:8090/test">Profile</a>
             <a href="http://localhost:8090/login">Login</a>
-            <a href="http://localhost:8090/viewcar">Cars</a>
+            <a href="http://localhost:8090/getStock">View Stock</a>
+            <a href="http://localhost:8090/getCar">View Car</a>
+            
+            
            
-            <div class="panel-body">
+           <a href="http://localhost:8090/viewcar">Cars</a>
+           
 
-            </div>
         </div>
-        <div class="mainContent" ng-init="viewData()">
-            <div class="content">
-                <article class="topcontent">
+        <form>
+            <table class="table table-stripped">
+                <tr><td> <h1>Add Car</h1></td></tr>
+                <tr><td><label>Name <td><input type="text" ng-model="car.name"/></td></label></td></tr>
+                <tr><td><label>Year <td><input type="date" ng-model="car.year"/></td></label></td></tr>
+                <tr><td><label>Image <td><input file-model="selectedUploadFile" type="file" name="file" filepreview="filepreview"/></td></label></td></tr>
+                <tr><td><label> Price <td><input type="number" ng-model="car.price" /></td></label></td></tr>
 
-                    <content>
-                        <div class="form-style-10">
+                <tr><td><input type="submit" value="Add Car"/></td><td><input type="submit" name="" value="Logout"/></td></tr>
 
-                            <form>
+            </table>  
 
-                                <table class="table table-stripped">
-                                    <tr><td><b><h3>PROFILE SETTINGS</h3></b></td></tr>
-                                    <tr>
-                                        <td>
-                                            <label>Display name: <td>{{displayName}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Name <td> {{name}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Email <td> {{email}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Username <td> {{username}}</td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Male <td><select ng-model="pro.gender">
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </select></td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <label>Date of birth <td><input type="date" ng-model="pro.dateofbirth" /></td>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> <input type="submit" ng-click="createprofile()" name="Save" value="Save"/></td>
-
-                                    </tr>
-                                </table>
-                            </form>
-                        </div>
-                    </content>
-                </article>
-            </div>
-        </div>
-
-
-
+        </form>
     </body>
 </html>

@@ -45,4 +45,5 @@ public class StockController {
     public void deleteStock(@RequestBody Stock stock){
         repo.delete(stock);
     }  
+    
 }
