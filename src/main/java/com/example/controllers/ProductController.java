@@ -6,15 +6,21 @@
 package com.example.controllers;
 
 import com.example.entity.Customer;
+import com.example.entity.ImageTest;
 import com.example.entity.Product;
 import com.example.entity.Stock;
+import com.example.repository.ImageRepo;
 import com.example.repository.ProductRepository;
 import com.example.service.CustomerService;
 import com.example.utility.Utility;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import org.json.JSONObject;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +43,9 @@ public class ProductController {
     @Autowired
     private ProductRepository repository;
     
+    @Autowired
+    private ImageRepo imgRepo;
+    
 
     @RequestMapping("/shop/{id}/product/{productId}")
     public Product getProduct(@PathVariable long id) {
@@ -58,6 +67,26 @@ public class ProductController {
         Stock stock = new Stock(name, description, image, category, price);
         
         repository.save(stock);
+    }
+    
+     @RequestMapping(method = RequestMethod.POST, value = "/image/{data}")
+    public @ResponseBody void addImg(@RequestBody byte[] image,@PathVariable("data") String data){
+        
+         System.out.println(data);
+         JSONObject stockJson = new JSONObject(data+"\"}");
+        
+        String name = stockJson.getString("name");
+        String description = stockJson.getString("description");
+        String category = stockJson.getString("category");
+        double price = stockJson.getDouble("price");
+
+        System.out.println(name);
+         
+        
+       Stock stock = new Stock(name, description, image, category, price);
+
+      
+       repository.save(stock);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/shop/products/total")

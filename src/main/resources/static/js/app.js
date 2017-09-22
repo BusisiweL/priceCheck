@@ -200,6 +200,8 @@ app.controller('AdminCarController', ['$scope', '$http', '$location', '$window',
 app.controller('StockController', ['$scope', '$http', '$location', '$window', function ($scope, $http, $location, $window) {
 
         $scope.selectedUploadFile;
+        alert($scope.selectedUploadFile);
+        
         $scope.uploadFile = function () {
             //get Stock number
             var formData = new FormData();

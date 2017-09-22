@@ -25,7 +25,7 @@ public class StockController {
     @Autowired
     private StockRepo repo;
     
-    @RequestMapping(value = "/admin/stock")
+    @RequestMapping(value = "/admin/getStock")
     public List<Stock> getAllStock(){
         List<Stock> stock = new ArrayList<>();
         
